@@ -8,6 +8,7 @@ import jade.domain.FIPAAgentManagement.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 
 public class MyAgent extends Agent {
 	protected void setup () {
@@ -37,8 +38,11 @@ public class MyAgent extends Agent {
 }
 
 class MyCyclicBehaviour extends CyclicBehaviour {
-	MyAgent myAgent;
-	public MyCyclicBehaviour(MyAgent myAgent) {
+	private MyAgent myAgent;
+    private HashMap<String, String> sentMessages = new HashMap<String, String>();
+    private int messageID = 0;
+
+    public MyCyclicBehaviour(MyAgent myAgent) {
 		this.myAgent = myAgent;
 	}
 	public void action() {
@@ -68,7 +72,9 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 						forward.addReceiver(new AID(foundAgent, AID.ISLOCALNAME));
 						forward.setContent(content);
 						forward.setOntology(ontology);
+						forward.setReplyWith(Integer.toString(messageID));
 						myAgent.send(forward);
+						sentMessages.put(Integer.toString(messageID), content);
 					}
 				}
 				catch (FIPAException ex)
@@ -79,7 +85,7 @@ class MyCyclicBehaviour extends CyclicBehaviour {
 			}
 			else
 			{	//when it is an answer
-				myAgent.displayHtmlResponse(content);
+				myAgent.displayHtmlResponse(content + sentMessages.get(message.getInReplyTo()));
 			}
 		}
 	}
