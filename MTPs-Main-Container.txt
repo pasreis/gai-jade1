@@ -1,1 +1,1 @@
-http://S7N-PRLANGN-15.pcoip.ki.agh.edu.pl:7778/acc
+http://s10n-mwo-1.pcoip.ki.agh.edu.pl:7778/acc
